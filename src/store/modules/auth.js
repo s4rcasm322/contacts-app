@@ -1,16 +1,8 @@
 const auth = {
   state: {
-    isAuthorized: false,
-    hash: null
   },
   getters: {},
   mutations: {
-    setIsAuthorized(state, val) {
-      state.isAuthorized = val
-    },
-    setHash(state, val) {
-      state.hash = val
-    }
   },
   actions: {
     async login({ commit, dispatch }, payload) {
@@ -28,9 +20,7 @@ const auth = {
               .toString(36)
               .substring(2)
 
-            commit('setHash', hash)
             window.localStorage.setItem('hash', hash)
-            commit('setIsAuthorized', true)
 
             break
           }
@@ -66,18 +56,8 @@ const auth = {
 
       return await dispatch('login', payload)
     },
-    autoLogin({ commit }) {
-      const hash = window.localStorage.getItem('hash')
-
-      if (hash) {
-        commit('setHash', hash)
-        commit('setIsAuthorized', true)
-      }
-    },
-    logout({ commit }) {
+    logout() {
       window.localStorage.removeItem('hash')
-      commit('setHash', null)
-      commit('setIsAuthorized', false)
     }
   }
 }
